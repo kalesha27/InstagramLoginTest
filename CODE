@@ -1,0 +1,35 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.edge.EdgeDriver;
+
+public class InstagramLoginTest {
+    public static void main(String[] args) {
+        // Set path to EdgeDriver
+        System.setProperty("webdriver.edge.driver", "C:\\drivers\\msedgedriver.exe");
+
+        // Launch Edge
+        WebDriver driver = new EdgeDriver();
+        driver.manage().window().maximize();
+
+        // Navigate to Instagram
+        driver.get("https://www.instagram.com/accounts/login/");
+
+        // Add wait to ensure page loads
+        try { Thread.sleep(5000); } catch (InterruptedException e) {}
+
+        // Locate username and password fields
+        driver.findElement(By.name("username")).sendKeys("testuser");
+        driver.findElement(By.name("password")).sendKeys("wrongpass");
+
+        // Click Login
+        driver.findElement(By.xpath("//button[@type='submit']")).click();
+
+        // Wait and capture error
+        try { Thread.sleep(5000); } catch (InterruptedException e) {}
+        String error = driver.findElement(By.xpath("//*[contains(text(),'Sorry')]")).getText();
+        System.out.println("Captured Error: " + error);
+
+        // Close browser
+        driver.quit();
+    }
+}
